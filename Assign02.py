@@ -39,10 +39,9 @@ for i in results:
     if i == True:
         correct += 1
         
-"""print(correct)
-print(results)
+print("GaussianNB classifier: ")
 print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")"""
+      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
 
 
 #Hard Coded Classifier Classer
@@ -62,13 +61,14 @@ classifier.fit(data_train, target_train)
 targets_predicted = classifier.predict(data_test)
 
 #Check accuracy of results
-"""results = (targets_predicted == target_test)
+results = (targets_predicted == target_test)
 correct = 0
 for i in results:
     if i == True:
         correct += 1
+print("Hard Coded Cassifier:" )
 print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")"""
+      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
 
 
 #My own kNN class
@@ -91,50 +91,38 @@ class kNN:
         counter = 0
         for i in data_test:
             distance = self.calculateDistance(i, self.data_train[counter])
-            #distances.append(distance, data_test[counter])
             tuple1 = (distance, target_test[counter])
             distances.append(tuple1)
             counter += 1
         results = [] # size k
         
         sorted_results = sorted(distances, key=lambda tup: tup[0])
-        print("Sorted")
-        print(sorted_results)
-        i = 0
-        #here need to check the most frequent number and return that
-        while i < k:
-            results.append(sorted_results[1][1])
-            i += 1
-        print("results are: ")
-        print(results)
-        return results
+        
+        #Extract and return just the number for results
+        sorted_test = [lis[1] for lis in sorted_results]
+        return sorted_test
             
    
+#Using my kNN class
 classifier = kNN()
 classifier.fit(data_train, target_train)
 predictions = classifier.predict(data_test, k = 3)
-print("predict distances are:\n")
-print(predictions) #This needs to be longer
-print(target_test)
-#TODO: find the classifier of the nearest neighbors, the majority of classifier will be the retunr value
+results = []
 results = (predictions == target_test)
 correct = 0
-print(results)
-#for i in results:
-#    if i == True:
-#        correct += 1
-#print("\nMy test\n")
-#print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-#      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
+for i in results:
+    if i == True:
+        correct += 1
+print("\nMy test:")
+print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
+      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
 
 
-
-"""print("\nUsing existing kNN Algorithm\n")
+#Using the existing KNN Algortihm
+print("\nUsing existing kNN Algorithm:")
 classifier = KNeighborsClassifier(n_neighbors=3)
 classifier.fit(data_train, target_train)
 predictions = classifier.predict(data_test)
-print("Actual predicitons are: \n")
-print(predictions)
 
 results = (predictions == target_test)
 correct = 0
@@ -142,7 +130,7 @@ for i in results:
     if i == True:
         correct += 1
 print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")"""
+      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
 
 
 
