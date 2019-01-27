@@ -1,136 +1,91 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jan 11 10:14:30 2019
+Created on Thu Jan 24 23:21:25 2019
 
-@author: Thomas
+@author: trosales
 """
+
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 import math
-
-#Load in the data
-from sklearn import datasets
-iris = datasets.load_iris()
-
-# Show the data (the attributes of each instance)
-print(iris.data)
-
-# Show the target values (in numeric format) of each instance
-print(iris.target)
-
-# Show the actual target names that correspond to each number
-print(iris.target_names)
-
-#Split up the data into train and test cases
-data_train, data_test, target_train, target_test = train_test_split(
-        iris.data, iris.target, test_size=0.30)
-
-#training a model based off of Naive Bayes algorithm
-classifier = GaussianNB()
-classifier.fit(data_train, target_train)
-
-#Make predicitons
-targets_predicted = classifier.predict(data_test)
-
-results = (targets_predicted == target_test)
-correct = 0
-for i in results:
-    if i == True:
-        correct += 1
-        
-print("GaussianNB classifier: ")
-print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
+import pandas as pd
 
 
-#Hard Coded Classifier Classer
-class HardCodedClassifier:
-    def fit(self, dataset_train, dataset_test):
-        print("\nCalling fit method\n")    
-    
-    def predict(self, test_data):
-        predictions = []
-        for i in test_data:
-            predictions.append(0)
-        return predictions
-            
-#Applying Prediction Class
-classifier = HardCodedClassifier()
-classifier.fit(data_train, target_train)
-targets_predicted = classifier.predict(data_test)
+#Assign03
 
-#Check accuracy of results
-results = (targets_predicted == target_test)
-correct = 0
-for i in results:
-    if i == True:
-        correct += 1
-print("Hard Coded Cassifier:" )
-print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
+#read in the three data file susing pandas
+#read in car.csv
+names = ["buying","maint","doors","persons","lug_boot","safety", "status"]
+car_data = pd.read_csv('car.csv', header=None, names=names)
+#print("car data is: ")
+#print(car_data)
 
+#Giving string data numeric value
+car_data.buying = car_data.buying.astype('category')
+car_data['buying_cat'] = car_data.buying.cat.codes
 
-#My own kNN class
-class kNN:
-    def fit(self, data_train, target_train):
-        self.data_train = data_train
-        self.data_test = data_test
-        
-    #Calculate euclidian distance
-    def calculateDistance(self, x, y):
-        distance = (((x[0] - y[0])**2) + 
-        ((x[1] - y[1])**2) + 
-        ((x[2] - y[2])**2) +
-        ((x[3] - y[3])**2))
-        return round(distance, 2)
-                             
-    #Comparing all distances and finding k number of smallest distances
-    def predict(self, data_test, k):
-        distances = []
-        counter = 0
-        for i in data_test:
-            distance = self.calculateDistance(i, self.data_train[counter])
-            tuple1 = (distance, target_test[counter])
-            distances.append(tuple1)
-            counter += 1
-        results = [] # size k
-        
-        sorted_results = sorted(distances, key=lambda tup: tup[0])
-        
-        #Extract and return just the number for results
-        sorted_test = [lis[1] for lis in sorted_results]
-        return sorted_test
-            
-   
-#Using my kNN class
-"""classifier = kNN()
-classifier.fit(data_train, target_train)
-predictions = classifier.predict(data_test, k = 3)
-results = []
-results = (predictions == target_test)
-correct = 0
-for i in results:
-    if i == True:
-        correct += 1
-print("\nMy test:")
-print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")"""
+car_data.maint = car_data.maint.astype('category')
+car_data['maint_cat'] = car_data.maint.cat.codes
+
+car_data.lug_boot = car_data.lug_boot.astype('category')
+car_data['lug_boot_cat'] = car_data.lug_boot.cat.codes
+
+car_data.safety = car_data.safety.astype('category')
+car_data['safety_cat'] = car_data.safety.cat.codes
+
+cleanup = {"doors": {"5more":5},
+                 "persons": {"more":5}}
+car_data.replace(cleanup, inplace=True)
+
+#car_data = car_data.drop(columns=['buying', 'maint', 'lug_boot', 'safety'])
+
+car_data = car_data[['doors', 'persons', 'buying_cat', 'maint_cat', 'lug_boot_cat',
+                     'safety_cat', 'status']]
+
+car_data.status = car_data.status.astype('category')
+car_data['status_cat'] = car_data.status.cat.codes
+
+car_target = car_data[['status_cat']]
+car_data = car_data.drop(columns=['status', 'status_cat'])
 
 
-#Using the existing KNN Algortihm
-print("\nUsing existing kNN Algorithm:")
-classifier = KNeighborsClassifier(n_neighbors=3)
-classifier.fit(data_train, target_train)
-predictions = classifier.predict(data_test)
+#convert dataframe to numpy array
+car_data = car_data.values
+#print(car_data)
 
-results = (predictions == target_test)
+classifier = KNeighborsClassifier(n_neighbors=5)
+classifier.fit(car_data, car_target)
+predictions = classifier.predict(car_data)
+
+car_target = car_target.values
+
+car_target = car_target.ravel()
+results = (predictions == car_target)
+
 correct = 0
 for i in results:
     if i == True:
         correct += 1
 print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
       " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
+
+#read in auto-mpg.data
+mpg_data = pd.read_csv('auto-mpg.data', header=None, delim_whitespace=True, na_values=["?"])
+mpg_data.columns = ["mpg","cylinders","displacement","horsepower","weight",
+                 "acceleration","modelyear","origin","carname"]
+mpg_data.horsepower = mpg_data.horsepower.fillna("unknown")
+#print("mpg_data is:")
+
+
+
+
+#read in student-mat.csv
+student_data = pd.read_csv('student-mat.csv', sep=";", header=None)
+#print("Student_data is: ")
+#print(student_data)
+
 
 
 
