@@ -7,13 +7,11 @@ Created on Thu Jan 24 23:21:25 2019
 """
 
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neighbors import KNeighborsRegressor
-import math
 import pandas as pd
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 #Assign03
@@ -60,7 +58,6 @@ car_data = car_data.drop(columns=['status', 'status_cat'])
 
 #convert dataframe to numpy array
 car_data = car_data.values
-#print(car_data)
 
 #.values to convert to numpy Array, ravel to convert to a 1d array
 car_target = car_target.values.ravel()
@@ -79,8 +76,9 @@ correct = 0
 for i in results:
     if i == True:
         correct += 1
-#print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-#      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy\n")
+print("1st Dataset: Car.csv:")
+print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
+      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy\n")
 
 
 """
@@ -89,7 +87,9 @@ SECOND DATASET
 : mpg_data
 """
 #read in auto-mpg.data
-mpg_data = pd.read_csv('auto-mpg.data', header=None, delim_whitespace=True, na_values=["?"])
+mpg_data = pd.read_csv('auto-mpg.data', header=None, 
+                       delim_whitespace=True, na_values=["?"])
+
 mpg_data.columns = ["mpg","cylinders","displacement","horsepower","weight",
                  "acceleration","modelyear","origin","carname"]
 
@@ -105,13 +105,13 @@ mpg_data = mpg_data[['cylinders','displacement','horsepower','weight',
 #mpg_data['horsepower'].plot(kind='hist', bins=100)
 #plt.xlabel('MPG Value')
 
+#convert data to numpy array
 mpg_target = mpg_target.values.ravel()
 mpg_data = mpg_data.values
 
 #split up the data
 data_train, data_test, target_train, target_test = train_test_split(
         mpg_data, mpg_target, test_size=0.30)
-
 
 regr = KNeighborsRegressor(n_neighbors=5)
 regr.fit(data_train, target_train)
@@ -124,8 +124,11 @@ correct = 0
 for i in results:
     if i == True:
         correct += 1
-#print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-#      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy\n")
+        
+#These are terribly inaccurate        
+print("Second Dataset: auto-mpg.data:")
+print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
+      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy\n")
 
 """
 THIRD DATASET
@@ -134,9 +137,6 @@ THIRD DATASET
 """
 #read in student-mat.csv
 student_data = pd.read_csv('student-mat.csv', sep=";")
-
-print("Student_data is: ")
-print(student_data)
 
 #Replacing two-option values
 cleanup = {"school": {"GP":0, "MS":1}, "sex": {"M":0, "F":1},
@@ -148,15 +148,10 @@ cleanup = {"school": {"GP":0, "MS":1}, "sex": {"M":0, "F":1},
            "romantic": {"yes":0, "no":1} 
            }
 student_data.replace(cleanup, inplace=True)
-print("Student_data is: ")
-print(student_data)
-
 
 #use one-hot encoding for the remaining values
 student_data = pd.get_dummies(student_data, columns=['Mjob', 'Fjob', 
                                                      'reason', 'guardian'])
-print("Check 2")
-print(student_data)
 
 student_target = student_data[['G3']]
 student_data = student_data.drop(columns=['G3'])
@@ -164,9 +159,6 @@ student_data = student_data.drop(columns=['G3'])
 #onvert to numpy array
 student_target = student_target.values.ravel()
 student_data = student_data.values
-
-#print(student_target)
-#print(student_data)
 
 #split up the data
 data_train, data_test, target_train, target_test = train_test_split(
@@ -181,6 +173,9 @@ correct = 0
 for i in results:
     if i == True:
         correct += 1
+        
+#These are terribly inaccurate    
+print("Third Dataset: student-mat.csv:")
 print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
       " for " + str(100 * round(correct / len(results), 2)) + "% accuracy\n")
 
