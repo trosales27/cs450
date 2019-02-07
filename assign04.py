@@ -33,10 +33,10 @@ class decision_tree:
         
         #This for loop begins the summation to calculate entropy for the dataset
         for i in labels:
-            #print(i, categories[i])
-            h -= ((categories[i]/len(data)) * math.log2(categories[i]))
+            h += ((categories[i]/len(data)) * math.log2((categories[i]/len(data))))
             
         h *= -1
+        
         print("h is:")
         print(h)
         
