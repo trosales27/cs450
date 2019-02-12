@@ -31,3 +31,4 @@ print(data1)
 #split up the data
 #data_train, data_test, target_train, target_test = train_test_split(
 #        data_test, data_target, test_size=0.30)
+head = node(data1)

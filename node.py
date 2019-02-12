@@ -14,4 +14,3 @@ Created on Wed Feb  6 20:30:08 2019
 class node:
     def __init__(self, data):
         self.data = data
-    
