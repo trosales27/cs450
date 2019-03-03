@@ -63,7 +63,7 @@ data2_x = data2.drop([0], axis=1)
 data_train, data_test, target_train, target_test = train_test_split(
          data_x, data_y, test_size=0.30)
  
-mlp = MLPClassifier(hidden_layer_sizes=(13,13,13),max_iter=500)
+mlp = MLPClassifier(hidden_layer_sizes=(20,20,20),max_iter=500)
 mlp.fit(data_train, target_train)
  
  
