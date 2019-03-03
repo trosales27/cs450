@@ -27,7 +27,7 @@ def splitAndPredict(data_x, data_y):
     data_train = scaler.transform(data_train)
     data_test = scaler.transform(data_test)
     
-    mlp = MLPClassifier(hidden_layer_sizes=(13,13,13),max_iter=500)
+    mlp = MLPClassifier(hidden_layer_sizes=(20,20,20),max_iter=500)
     mlp.fit(data_train, target_train)
     
     predictions = mlp.predict(data_test)
