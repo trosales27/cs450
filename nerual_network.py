@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier 
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report,confusion_matrix
+import matplotlib.pyplot as plt
 
 
 def splitAndPredict(data_x, data_y):
@@ -27,12 +28,15 @@ def splitAndPredict(data_x, data_y):
     data_train = scaler.transform(data_train)
     data_test = scaler.transform(data_test)
     
+    #Messed with the layer size, 20 works better thanthe previous 13
     mlp = MLPClassifier(hidden_layer_sizes=(20,20,20),max_iter=500)
     mlp.fit(data_train, target_train)
     
     predictions = mlp.predict(data_test)
     print(confusion_matrix(target_test,predictions))
     print(classification_report(target_test,predictions))
+    plt.plot(data_train, data_test)
+    plt.show()
     
     
 
@@ -66,7 +70,8 @@ data_train, data_test, target_train, target_test = train_test_split(
 mlp = MLPClassifier(hidden_layer_sizes=(20,20,20),max_iter=500)
 mlp.fit(data_train, target_train)
  
- 
+
+print("data2:") 
 predictions = mlp.predict(data_test)
 print(confusion_matrix(target_test,predictions))
 print(classification_report(target_test,predictions))
