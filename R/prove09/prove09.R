@@ -14,7 +14,6 @@ letterTrain <- data_letters[-testRows,]
 #Use the SVM to create a model 
 model <- svm(letter~., data = letterTrain, kernel = "radial", gamma = 0.001, cost = 10)
 
-print(letterTest[1])
 #Make a prediciton
 prediction <- predict(model, letterTest[,-1])
 
@@ -24,9 +23,8 @@ confusionMatrix <- table(pred = prediction, true = letterTest$letter)
 agreement <- prediction == letterTest$letter
 accuracy <- prop.table(table(agreement))
 
-print(confusionMatrix)install.packages('e1071', dependencies = TRUE)
+print(confusionMatrix)
 print(accuracy)
-
 
 #############################################################################
 #Trouble with this file
@@ -55,7 +53,7 @@ confusionMatrix <- table(pred = prediction, true = vowelTest$Class)
 agreement <- prediction == vowelTest$Class
 accuracy <- prop.table(table(agreement))
 
-print(confusionMatrix)install.packages('e1071', dependencies = TRUE)
+print(confusionMatrix)
 print(accuracy)
 
 
