@@ -67,9 +67,25 @@ myClusters$tot.withinss
 # Plotting a visual representation of k-means clusters
 clusplot(myData, myClusters$cluster, color=TRUE, shade=TRUE, labels=2, lines=0) 
 
+#Loop through and see 25 different averages for 25 different clusters
 table = NULL;
-for (i in 1:10) {
-  table[i] = i * 2
+for (i in 1:25) {
+  myClusters = kmeans(data_scaled, i)
+  table[i] = myClusters$tot.withinss
 }
+plot(table)
 
+myClusters = kmeans(data_scaled, 4)
+# # Summary of the clusters
+summary(myClusters)
+# # Centers (mean values) of the clusters
+myClusters$centers
+# Cluster assignments
+myClusters$cluster
+# Within-cluster sum of squares and total sum of squares across clusters
+myClusters$withinss
+myClusters$tot.withinss
+
+# Plotting a visual representation of k-means clusters
+clusplot(myData, myClusters$cluster, color=TRUE, shade=TRUE, labels=2, lines=0) 
 
