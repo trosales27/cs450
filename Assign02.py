@@ -104,9 +104,9 @@ class kNN:
             
    
 #Using my kNN class
-"""classifier = kNN()
+classifier = kNN()
 classifier.fit(data_train, target_train)
-predictions = classifier.predict(data_test, k = 3)
+predictions = classifier.predict(data_test, k = 5)
 results = []
 results = (predictions == target_test)
 correct = 0
@@ -115,7 +115,7 @@ for i in results:
         correct += 1
 print("\nMy test:")
 print("There were " + str(correct) + " correct estimates out of " + str(len(results)) +
-      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")"""
+      " for " + str(100 * round(correct / len(results), 2)) + "% accuracy")
 
 
 #Using the existing KNN Algortihm
